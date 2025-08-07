@@ -14,7 +14,105 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      equipment: {
+        Row: {
+          availability_status: string | null
+          brand: string
+          category: string
+          certification_status: string | null
+          condition: string
+          created_at: string
+          description: string | null
+          id: string
+          images: string[] | null
+          location: string | null
+          model: string | null
+          name: string
+          price: number
+          tags: string[] | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          availability_status?: string | null
+          brand: string
+          category: string
+          certification_status?: string | null
+          condition: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          images?: string[] | null
+          location?: string | null
+          model?: string | null
+          name: string
+          price: number
+          tags?: string[] | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          availability_status?: string | null
+          brand?: string
+          category?: string
+          certification_status?: string | null
+          condition?: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          images?: string[] | null
+          location?: string | null
+          model?: string | null
+          name?: string
+          price?: number
+          tags?: string[] | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          avatar_url: string | null
+          bio: string | null
+          company: string | null
+          created_at: string
+          email: string | null
+          full_name: string | null
+          id: string
+          phone: string | null
+          updated_at: string
+          user_id: string
+          verified: boolean | null
+        }
+        Insert: {
+          avatar_url?: string | null
+          bio?: string | null
+          company?: string | null
+          created_at?: string
+          email?: string | null
+          full_name?: string | null
+          id?: string
+          phone?: string | null
+          updated_at?: string
+          user_id: string
+          verified?: boolean | null
+        }
+        Update: {
+          avatar_url?: string | null
+          bio?: string | null
+          company?: string | null
+          created_at?: string
+          email?: string | null
+          full_name?: string | null
+          id?: string
+          phone?: string | null
+          updated_at?: string
+          user_id?: string
+          verified?: boolean | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
