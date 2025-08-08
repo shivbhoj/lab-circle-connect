@@ -2,6 +2,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Star, CheckCircle, Heart } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const featuredEquipment = [
   {
@@ -52,6 +53,8 @@ const featuredEquipment = [
 ];
 
 const FeaturedEquipment = () => {
+  const navigate = useNavigate();
+  
   return (
     <section className="py-16">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -153,7 +156,11 @@ const FeaturedEquipment = () => {
         </div>
 
         <div className="text-center mt-12">
-          <Button variant="outline" size="lg">
+          <Button 
+            variant="outline" 
+            size="lg"
+            onClick={() => navigate('/equipment')}
+          >
             View All Equipment
           </Button>
         </div>

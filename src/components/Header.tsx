@@ -1,8 +1,11 @@
 import { Search, ShoppingCart, User, Menu } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { useNavigate } from "react-router-dom";
 
 const Header = () => {
+  const navigate = useNavigate();
+  
   return (
     <header className="bg-background border-b border-border sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -10,7 +13,12 @@ const Header = () => {
           {/* Logo */}
           <div className="flex items-center">
             <div className="flex-shrink-0">
-              <h1 className="text-xl font-bold text-primary">LabExchange</h1>
+              <h1 
+                className="text-xl font-bold text-primary cursor-pointer" 
+                onClick={() => navigate('/')}
+              >
+                LabExchange
+              </h1>
             </div>
           </div>
 
@@ -27,6 +35,9 @@ const Header = () => {
 
           {/* Navigation */}
           <div className="flex items-center space-x-4">
+            <Button variant="ghost" size="sm" onClick={() => navigate('/equipment')}>
+              Browse Equipment
+            </Button>
             <Button variant="ghost" size="sm">
               Sell Equipment
             </Button>

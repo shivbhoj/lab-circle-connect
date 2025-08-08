@@ -1,9 +1,12 @@
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { CheckCircle, TrendingUp, Shield } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import heroImage from "@/assets/hero-lab-equipment.jpg";
 
 const Hero = () => {
+  const navigate = useNavigate();
+  
   return (
     <section className="relative bg-gradient-to-br from-primary/5 to-sustainability/5 py-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -44,10 +47,19 @@ const Hero = () => {
 
             {/* CTA Buttons */}
             <div className="flex flex-col sm:flex-row gap-4">
-              <Button variant="hero" size="lg" className="text-lg px-8">
+              <Button 
+                variant="default" 
+                size="lg" 
+                className="text-lg px-8"
+                onClick={() => navigate('/equipment')}
+              >
                 Browse Equipment
               </Button>
-              <Button variant="trust" size="lg" className="text-lg px-8">
+              <Button 
+                variant="outline" 
+                size="lg" 
+                className="text-lg px-8"
+              >
                 Sell Your Equipment
               </Button>
             </div>
