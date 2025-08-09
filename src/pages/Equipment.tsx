@@ -50,7 +50,14 @@ const Equipment = () => {
     try {
       const { data, error } = await supabase
         .from('equipment')
-        .select('*')
+        .select(`
+          *,
+          profiles:user_id (
+            full_name,
+            company,
+            verified
+          )
+        `)
         .eq('availability_status', 'available')
         .order('created_at', { ascending: false });
 
