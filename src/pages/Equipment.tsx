@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import Header from "@/components/Header";
@@ -42,11 +42,7 @@ const Equipment = () => {
   const [categoryFilter, setCategoryFilter] = useState("all");
   const [conditionFilter, setConditionFilter] = useState("all");
 
-  useEffect(() => {
-    fetchEquipment();
-  }, []);
-
-  const fetchEquipment = async () => {
+  const fetchEquipment = useCallback(async () => {
     try {
       const { data, error } = await supabase
         .from('equipment')
@@ -66,7 +62,11 @@ const Equipment = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [toast]);
+
+  useEffect(() => {
+    fetchEquipment();
+  }, [fetchEquipment]);
 
   const filteredEquipment = equipment.filter(item => {
     const matchesSearch = item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
