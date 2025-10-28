@@ -67,7 +67,7 @@ const EquipmentDetail = () => {
         if (error) throw error;
         setEquipment(data as Equipment);
       } catch (error) {
-        console.error('Error fetching equipment details:', error);
+        // Error is handled by toast notification, no need to log in production
         toast({
           title: "Error",
           description: "Failed to load equipment details.",

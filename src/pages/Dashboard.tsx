@@ -5,6 +5,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
 import { useToast } from "@/hooks/use-toast";
 import { PlusCircle, Edit, Trash2 } from "lucide-react";
 import { User } from "@supabase/supabase-js";
@@ -24,6 +25,8 @@ const Dashboard = () => {
   const [userEquipment, setUserEquipment] = useState<Equipment[]>([]);
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState<User | null>(null);
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [equipmentToDelete, setEquipmentToDelete] = useState<string | null>(null);
 
   const fetchUserEquipment = useCallback(async () => {
     if (!user) return;
@@ -68,17 +71,25 @@ const Dashboard = () => {
     navigate(`/list-equipment?edit=${equipmentId}`);
   };
 
-  const handleDelete = async (equipmentId: string) => {
-    if (!window.confirm("Are you sure you want to delete this listing?")) return;
+  const handleDeleteClick = (equipmentId: string) => {
+    setEquipmentToDelete(equipmentId);
+    setDeleteDialogOpen(true);
+  };
+
+  const handleDeleteConfirm = async () => {
+    if (!equipmentToDelete) return;
 
     try {
-      const { error } = await supabase.from('equipment').delete().eq('id', equipmentId);
+      const { error } = await supabase.from('equipment').delete().eq('id', equipmentToDelete);
       if (error) throw error;
       toast({ title: "Success", description: "Equipment listing deleted." });
       fetchUserEquipment(); // Refresh the list
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : "Failed to delete listing.";
       toast({ title: "Error", description: errorMessage, variant: "destructive" });
+    } finally {
+      setDeleteDialogOpen(false);
+      setEquipmentToDelete(null);
     }
   };
 
@@ -121,7 +132,7 @@ const Dashboard = () => {
                         <Edit className="h-4 w-4 mr-2" />
                         Edit
                       </Button>
-                      <Button variant="destructive" size="sm" onClick={() => handleDelete(item.id)}>
+                      <Button variant="destructive" size="sm" onClick={() => handleDeleteClick(item.id)}>
                         <Trash2 className="h-4 w-4 mr-2" />
                         Delete
                       </Button>
@@ -134,6 +145,23 @@ const Dashboard = () => {
         </Card>
       </div>
       <Footer />
+
+      <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Delete Equipment Listing</AlertDialogTitle>
+            <AlertDialogDescription>
+              Are you sure you want to delete this listing? This action cannot be undone.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction onClick={handleDeleteConfirm} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
+              Delete
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 };
