@@ -19,11 +19,19 @@ const profileSchema = z.object({
     .string()
     .min(2, "Full name must be at least 2 characters.")
     .max(100, "Full name must not exceed 100 characters.")
-    .trim(),
+    .trim()
+    .refine(
+      (val) => !val.includes('\0') && !/[<>{}]/.test(val),
+      "Full name contains invalid characters"
+    ),
   company: z
     .string()
     .max(100, "Company name must not exceed 100 characters.")
     .trim()
+    .refine(
+      (val) => !val || (!val.includes('\0') && !/[<>{}]/.test(val)),
+      "Company name contains invalid characters"
+    )
     .optional()
     .or(z.literal("")),
 });

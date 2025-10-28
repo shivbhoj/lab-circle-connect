@@ -11,15 +11,30 @@ export function cn(...inputs: ClassValue[]): string {
 }
 
 /**
- * Validates and trims user input strings
- * Note: This function only validates and trims. DO NOT apply HTML encoding for database storage.
+ * Validates and trims user input strings with security checks
+ * Note: This function validates and trims. DO NOT apply HTML encoding for database storage.
  * HTML encoding should only be applied when rendering to prevent XSS.
  * @param input - Raw user input string
+ * @param maxLength - Maximum allowed length (default: 1000)
  * @returns Trimmed and validated string
+ * @throws Error if input contains null bytes or exceeds maxLength
  */
-export function validateInput(input: string): string {
+export function validateInput(input: string, maxLength: number = 1000): string {
   if (typeof input !== 'string') return ''
-  return input.trim()
+  
+  const trimmed = input.trim()
+  
+  // Check for null bytes which can be used in injection attacks
+  if (trimmed.includes('\0')) {
+    throw new Error('Invalid input: contains null bytes')
+  }
+  
+  // Check length
+  if (trimmed.length > maxLength) {
+    throw new Error(`Input exceeds maximum length of ${maxLength} characters`)
+  }
+  
+  return trimmed
 }
 
 /**
