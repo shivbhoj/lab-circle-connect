@@ -11,20 +11,15 @@ export function cn(...inputs: ClassValue[]): string {
 }
 
 /**
- * Sanitizes user input to prevent XSS attacks
+ * Validates and trims user input strings
+ * Note: This function only validates and trims. DO NOT apply HTML encoding for database storage.
+ * HTML encoding should only be applied when rendering to prevent XSS.
  * @param input - Raw user input string
- * @returns Sanitized string with dangerous characters escaped
+ * @returns Trimmed and validated string
  */
-export function sanitizeInput(input: string): string {
+export function validateInput(input: string): string {
   if (typeof input !== 'string') return ''
-  return input
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#x27;')
-    .replace(/\//g, '&#x2F;')
-    .trim()
+  return input.trim()
 }
 
 /**

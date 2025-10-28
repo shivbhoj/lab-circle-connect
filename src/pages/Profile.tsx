@@ -12,17 +12,18 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { useToast } from "@/hooks/use-toast";
 import { User } from "@supabase/supabase-js";
-import { formatError, sanitizeInput } from "@/lib/utils";
+import { formatError, validateInput } from "@/lib/utils";
 
 const profileSchema = z.object({
   full_name: z
     .string()
     .min(2, "Full name must be at least 2 characters.")
     .max(100, "Full name must not exceed 100 characters.")
-    .regex(/^[a-zA-Z\s'-]+$/, "Full name can only contain letters, spaces, hyphens, and apostrophes."),
+    .trim(),
   company: z
     .string()
     .max(100, "Company name must not exceed 100 characters.")
+    .trim()
     .optional()
     .or(z.literal("")),
 });
@@ -119,16 +120,16 @@ const Profile = () => {
     }
 
     try {
-      // Sanitize inputs before sending to database
-      const sanitizedData = {
-        full_name: sanitizeInput(values.full_name),
-        company: values.company ? sanitizeInput(values.company) : null,
+      // Validate and trim inputs before sending to database
+      const validatedData = {
+        full_name: validateInput(values.full_name),
+        company: values.company ? validateInput(values.company) : null,
         updated_at: new Date().toISOString(),
       };
 
       const { error: updateError } = await supabase
         .from("profiles")
-        .update(sanitizedData)
+        .update(validatedData)
         .eq("user_id", user.id);
 
       if (updateError) {

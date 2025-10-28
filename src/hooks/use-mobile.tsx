@@ -4,9 +4,10 @@ const MOBILE_BREAKPOINT = 768
 
 export function useIsMobile() {
   const [isMobile, setIsMobile] = React.useState<boolean>(() => {
-    // Initialize with actual value on mount to avoid hydration issues
+    // Initialize with actual value on mount using media query for consistency
     if (typeof window !== "undefined") {
-      return window.innerWidth < MOBILE_BREAKPOINT
+      const mql = window.matchMedia(`(max-width: ${MOBILE_BREAKPOINT - 1}px)`)
+      return mql.matches
     }
     return false
   })
