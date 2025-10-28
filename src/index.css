@@ -2,9 +2,22 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
-All colors MUST be HSL.
-*/
+/**
+ * Design System - Color Tokens and Theme Variables
+ * 
+ * This file defines the core design system for the Lab Circle Connect application.
+ * All colors MUST be defined in HSL format for consistency and ease of manipulation.
+ * 
+ * Structure:
+ * - Base colors: Background, foreground, and text colors
+ * - UI Components: Cards, popovers, buttons, and form elements
+ * - Semantic colors: Primary (brand), secondary, accent, destructive
+ * - State colors: Muted, borders, focus rings
+ * - Custom marketplace tokens: Trust, sustainability, verification badges
+ * - Sidebar tokens: Navigation sidebar color system
+ * 
+ * Dark mode: All variables are redefined in the .dark class for theme switching
+ */
 
 @layer base {
   :root {
