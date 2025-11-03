@@ -109,7 +109,7 @@ const ListEquipment = () => {
       const errorMessage = error instanceof Error ? error.message : "An unknown error occurred.";
       toast({
         title: "Error",
-        description: errorMessage,
+        description: error.message,
         variant: "destructive",
       });
     }
