@@ -16,35 +16,11 @@ const Auth = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
 
-  const validatePassword = (password: string): { isValid: boolean; message: string } => {
-    if (password.length < 8) {
-      return { isValid: false, message: "Password must be at least 8 characters long" };
-    }
-    if (!/[A-Z]/.test(password)) {
-      return { isValid: false, message: "Password must contain at least one uppercase letter" };
-    }
-    if (!/[a-z]/.test(password)) {
-      return { isValid: false, message: "Password must contain at least one lowercase letter" };
-    }
-    if (!/[0-9]/.test(password)) {
-      return { isValid: false, message: "Password must contain at least one number" };
-    }
-    return { isValid: true, message: "" };
-  };
-
   const handleAuth = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
 
     try {
-      // Validate password for signup
-      if (isSigningUp) {
-        const validation = validatePassword(password);
-        if (!validation.isValid) {
-          throw new Error(validation.message);
-        }
-      }
-
       if (isSigningUp) {
         const { error } = await supabase.auth.signUp({
           email,
@@ -129,13 +105,7 @@ const Auth = () => {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
-                  minLength={isSigningUp ? 8 : undefined}
                 />
-                {isSigningUp && (
-                  <p className="text-xs text-muted-foreground">
-                    Must be at least 8 characters with uppercase, lowercase, and number
-                  </p>
-                )}
               </div>
               <Button type="submit" className="w-full" disabled={loading}>
                 {loading ? (isSigningUp ? "Signing Up..." : "Signing In...") : (isSigningUp ? "Sign Up" : "Sign In")}
